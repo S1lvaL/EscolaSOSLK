@@ -4,7 +4,7 @@ public class Inicio extends javax.swing.JFrame {
     
     public Inicio() {
         initComponents();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); //Centralizar a tela
     }
 
     @SuppressWarnings("unchecked")
@@ -47,8 +47,8 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       new Meio().setVisible(true);
-       this.dispose();
+       new Meio().setVisible(true); //Abre a janela Meio para os dados do aluno.
+       this.dispose(); //Fechar a tela atual
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

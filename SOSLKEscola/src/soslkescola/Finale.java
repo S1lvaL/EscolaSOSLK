@@ -4,22 +4,20 @@ import Alunos.Alunos;
 
 public class Finale extends javax.swing.JFrame {
 
-
     public Finale(Alunos aluno) {
         initComponents();
-                setLocationRelativeTo(null);
-       
-        double media = aluno.calcularmedia();
-        String status = aluno.aprovacao() ? "Aprovado" : "Reprovado";
-        
-        //Atualizar os labels com os dados do aluno
-        lblnome.setText(aluno.getNome());
-        lblmatricula.setText(String.valueOf(aluno.getMatricula()));
-        lblmedia.setText(String.format("%.2f", media)); // Formatar para duas casas decimais
-        lblstatus.setText(status);
-    
-    }
+        setLocationRelativeTo(null); //Centralizar a tela
 
+        double media = aluno.calcularmedia(); //Cria uma variavel para retorna o valor no metodo calcularmedia().
+        String status = aluno.aprovacao() ? "Aprovado" : "Reprovado"; //Atribui a variavel, "Aprovado" se aluno.aprovacao() retornar true, ou "Reprovado" se retornar false
+
+        //Atualizar os labels com os dados do aluno.
+        lblnome.setText(aluno.getNome()); //Exibir o dado nome.
+        lblmatricula.setText(String.valueOf(aluno.getMatricula())); //Converte int em string.
+        lblmedia.setText(String.format("%.2f", media)); // Formatar para duas casas decimais.
+        lblstatus.setText(status); //Exibir o status se foi aprovado ou não.
+
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -92,7 +90,7 @@ public class Finale extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.exit(0);
+        System.exit(0);//Encerra a aplicação.
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

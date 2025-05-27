@@ -1,4 +1,3 @@
-
 package soslkescola;
 
 import Alunos.Alunos;
@@ -11,11 +10,12 @@ import javax.swing.border.Border;
 
 public class Meio extends javax.swing.JFrame {
 
-    private final Border bordaPadrao = new JTextField().getBorder(); //Borda padrão
-    private final Border bordaErro = BorderFactory.createLineBorder(Color.RED, 3); //Borda vermelha caso tenha erro
+    private final Border bordaPadrao = new JTextField().getBorder(); //Configuração da borda padrão.
+    private final Border bordaErro = BorderFactory.createLineBorder(Color.RED, 3); //Configuração para a borda vermelha de 3 pixels, caso tenha erro.
 
     public Meio() {
         initComponents();
+        setLocationRelativeTo(null); //Centralizar a tela
     }
 
     @SuppressWarnings("unchecked")
@@ -149,11 +149,11 @@ public class Meio extends javax.swing.JFrame {
     }//GEN-LAST:event_txtnomeFocusLost
 
     private void txtmatriculaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtmatriculaFocusLost
-
+//Era pra eu ter colocado as validações dentro do focuslost
     }//GEN-LAST:event_txtmatriculaFocusLost
 
     private void txtmatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtmatriculaActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtmatriculaActionPerformed
 
     private void txtn1provaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtn1provaFocusLost
@@ -161,7 +161,7 @@ public class Meio extends javax.swing.JFrame {
     }//GEN-LAST:event_txtn1provaFocusLost
 
     private void txtn1provaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtn1provaActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtn1provaActionPerformed
 
     private void txtn2provaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtn2provaFocusLost
@@ -173,124 +173,124 @@ public class Meio extends javax.swing.JFrame {
     }//GEN-LAST:event_txtntrabalhoFocusLost
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //Resetar bordas para padrão
+        //Resetar bordas configuradas para a padrão
         txtnome.setBorder(bordaPadrao);
         txtmatricula.setBorder(bordaPadrao);
         txtn1prova.setBorder(bordaPadrao);
         txtn2prova.setBorder(bordaPadrao);
         txtntrabalho.setBorder(bordaPadrao);
 
-        Alunos aluno = new Alunos();
+        Alunos aluno = new Alunos(); //Cria um novo objeto Alunos para armazenar e validar os dados.
 
-        //Validar nome
-        ValidacaoResultado resultado = aluno.setNome(txtnome.getText().trim()); //vê se não está vazio
-        if (!resultado.isSucesso()) {//Verificar se não é numeros
-            JOptionPane.showMessageDialog(this, resultado.getMensagem(), "Erro", JOptionPane.ERROR_MESSAGE);
-            txtnome.setBorder(bordaErro);
-            txtnome.requestFocus();
-            return;
+        //Valida o campo nome.
+        ValidacaoResultado resultado = aluno.setNome(txtnome.getText().trim()); //Verifica se o nome não está vazio e não contém números.
+        if (!resultado.isSucesso()) { //Verifica se a validação do nome foi bem-sucedida.
+            JOptionPane.showMessageDialog(this, resultado.getMensagem(), "Erro", JOptionPane.ERROR_MESSAGE); //Exibe a mensagem de erro em uma caixa de diálogo.
+            txtnome.setBorder(bordaErro); //Aplica borda vermelha ao campo com erro.
+            txtnome.requestFocus(); //Retorna o foco ao campo de texto.
+            return; //Interrompe o método, garantindo que os outros campos não sejam validados até que o nome esteja correto.
         }
 
-        //Validar matrícula
+        //Valida o campo matrícula.
         try {
-            String matricula = txtmatricula.getText().trim();//vê se não está vazio
+            String matricula = txtmatricula.getText().trim(); //O trim() remove espaços em branco, e isEmpty() verifica se a string está vazia.
             if (matricula.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Informe a matrícula.", "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Informe a matrícula.", "Erro", JOptionPane.ERROR_MESSAGE);//Exibe a mensagem de erro em uma caixa de diálogo.
+                txtmatricula.setBorder(bordaErro);//Aplica borda vermelha ao campo com erro.
+                txtmatricula.requestFocus();//Retorna o foco ao campo de texto.
+                return;
+            }
+            if (!matricula.matches("\\d+")) { //Verifica se a matrícula contém apenas dígitos.
+                JOptionPane.showMessageDialog(this, "Matrícula deve conter apenas números positivos.", "Erro", JOptionPane.ERROR_MESSAGE);//Exibe a mensagem de erro em uma caixa de diálogo.
                 txtmatricula.setBorder(bordaErro);
                 txtmatricula.requestFocus();
                 return;
             }
-            if (!matricula.matches("\\d+")) { //Confirmar se os dados são numeros
-                JOptionPane.showMessageDialog(this, "Matrícula deve conter apenas números positivos.", "Erro", JOptionPane.ERROR_MESSAGE);
+            resultado = aluno.setMatricula(Integer.parseInt(matricula)); //Valida se a matrícula é maior que zero.
+            if (!resultado.isSucesso()) {
+                JOptionPane.showMessageDialog(this, resultado.getMensagem(), "Erro", JOptionPane.ERROR_MESSAGE);//Exibe a mensagem de erro em uma caixa de diálogo.
                 txtmatricula.setBorder(bordaErro);
                 txtmatricula.requestFocus();
                 return;
             }
-            resultado = aluno.setMatricula(Integer.parseInt(matricula));
-            if (!resultado.isSucesso()) { //Vê se é maior ou igual a zero
-                JOptionPane.showMessageDialog(this, resultado.getMensagem(), "Erro", JOptionPane.ERROR_MESSAGE);
-                txtmatricula.setBorder(bordaErro);
-                txtmatricula.requestFocus();
-                return;
-            }
-        } catch (NumberFormatException ex) {//Capturar erro e impedir que trave
-            JOptionPane.showMessageDialog(this, "Matrícula deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException ex) { //Captura erro de conversão para número inteiro.
+            JOptionPane.showMessageDialog(this, "Matrícula deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);//Exibe a mensagem de erro em uma caixa de diálogo.
             txtmatricula.setBorder(bordaErro);
             txtmatricula.requestFocus();
             return;
         }
 
-        //Validar nota da prova 1
+        //Valida a nota da prova 1.
         try {
-            if (txtn1prova.getText().trim().isEmpty()) { //vê se não está vazio
-                JOptionPane.showMessageDialog(this, "Informe a nota da 1ª prova.", "Erro", JOptionPane.ERROR_MESSAGE);
+            if (txtn1prova.getText().trim().isEmpty()) { //Verifica se a nota da prova 1 não está vazia, removendo espaços em branco.
+                JOptionPane.showMessageDialog(this, "Informe a nota da 1ª prova.", "Erro", JOptionPane.ERROR_MESSAGE);//Exibe a mensagem de erro em uma caixa de diálogo.
+                txtn1prova.setBorder(bordaErro);//Aplica borda vermelha ao campo com erro.
+                txtn1prova.requestFocus();//Retorna o foco ao campo de texto.
+                return;
+            }
+            resultado = aluno.setNprova1(Double.parseDouble(txtn1prova.getText().trim())); //Valida se a nota está entre 0 e 10.
+            if (!resultado.isSucesso()) {
+                JOptionPane.showMessageDialog(this, resultado.getMensagem(), "Erro", JOptionPane.ERROR_MESSAGE);//Exibe a mensagem de erro em uma caixa de diálogo.
                 txtn1prova.setBorder(bordaErro);
                 txtn1prova.requestFocus();
                 return;
             }
-            resultado = aluno.setNprova1(Double.parseDouble(txtn1prova.getText().trim()));
-            if (!resultado.isSucesso()) {//Verificar se é maior ou igual a zero e menor ou igual a dez
-                JOptionPane.showMessageDialog(this, resultado.getMensagem(), "Erro", JOptionPane.ERROR_MESSAGE);
-                txtn1prova.setBorder(bordaErro);
-                txtn1prova.requestFocus();
-                return;
-            }
-        } catch (NumberFormatException ex) {//Capturar erro e impedir que trave
-            JOptionPane.showMessageDialog(this, "Nota da Prova 1 deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException ex) { //Captura erro de conversão para número decimal.
+            JOptionPane.showMessageDialog(this, "Nota da Prova 1 deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);//Exibe a mensagem de erro em uma caixa de diálogo.
             txtn1prova.setBorder(bordaErro);
             txtn1prova.requestFocus();
             return;
         }
 
-        //Validar nota da prova 2
+        //Valida a nota da prova 2.
         try {
-            if (txtn2prova.getText().trim().isEmpty()) {//vê se não está vazio
-                JOptionPane.showMessageDialog(this, "Informe a nota da 2ª prova.", "Erro", JOptionPane.ERROR_MESSAGE);
+            if (txtn2prova.getText().trim().isEmpty()) { //Verifica se a nota da prova 2 não está vazia, removendo espaços em branco.
+                JOptionPane.showMessageDialog(this, "Informe a nota da 2ª prova.", "Erro", JOptionPane.ERROR_MESSAGE);//Exibe a mensagem de erro em uma caixa de diálogo.
+                txtn2prova.setBorder(bordaErro);//Aplica borda vermelha ao campo com erro.
+                txtn2prova.requestFocus();//Retorna o foco ao campo de texto.
+                return;
+            }
+            resultado = aluno.setNprova2(Double.parseDouble(txtn2prova.getText().trim()));//Valida se a nota está entre 0 e 10.
+            if (!resultado.isSucesso()) {
+                JOptionPane.showMessageDialog(this, resultado.getMensagem(), "Erro", JOptionPane.ERROR_MESSAGE);//Exibe a mensagem de erro em uma caixa de diálogo.
                 txtn2prova.setBorder(bordaErro);
                 txtn2prova.requestFocus();
                 return;
             }
-            resultado = aluno.setNprova2(Double.parseDouble(txtn2prova.getText().trim()));
-            if (!resultado.isSucesso()) {//Verificar se é maior ou igual a zero e menor ou igual a dez
-                JOptionPane.showMessageDialog(this, resultado.getMensagem(), "Erro", JOptionPane.ERROR_MESSAGE);
-                txtn2prova.setBorder(bordaErro);
-                txtn2prova.requestFocus();
-                return;
-            }
-        } catch (NumberFormatException ex) {//Capturar erro e impedir que trave
-            JOptionPane.showMessageDialog(this, "Nota da Prova 2 deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
-            txtn2prova.setBorder(bordaErro);
+        } catch (NumberFormatException ex) {//Captura erro de conversão para número decimal.
+            JOptionPane.showMessageDialog(this, "Nota da Prova 2 deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);//Exibe a mensagem de erro em uma caixa de diálogo.
+            txtn2prova.setBorder(bordaErro);//Aplica borda vermelha ao campo com erro.
             txtn2prova.requestFocus();
             return;
         }
 
-        // Validar nota do trabalho
+        //Valida a nota do trabalho.
         try {
-            if (txtntrabalho.getText().trim().isEmpty()) {//vê se não está vazio
-                JOptionPane.showMessageDialog(this, "Informe a nota do trabalho.", "Erro", JOptionPane.ERROR_MESSAGE);
+            if (txtntrabalho.getText().trim().isEmpty()) {//Verifica se a nota do trabalho não está vazia, removendo espaços em branco.
+                JOptionPane.showMessageDialog(this, "Informe a nota do trabalho.", "Erro", JOptionPane.ERROR_MESSAGE);//Exibe a mensagem de erro em uma caixa de diálogo.
+                txtntrabalho.setBorder(bordaErro);
+                txtntrabalho.requestFocus();//Retorna o foco ao campo de texto.
+                return;
+            }
+            resultado = aluno.setNtrabalho(Double.parseDouble(txtntrabalho.getText().trim())); //Valida se a nota está entre 0 e 10.
+            if (!resultado.isSucesso()) {
+                JOptionPane.showMessageDialog(this, resultado.getMensagem(), "Erro", JOptionPane.ERROR_MESSAGE);//Exibe a mensagem de erro em uma caixa de diálogo.
                 txtntrabalho.setBorder(bordaErro);
                 txtntrabalho.requestFocus();
                 return;
             }
-            resultado = aluno.setNtrabalho(Double.parseDouble(txtntrabalho.getText().trim()));
-            if (!resultado.isSucesso()) {//Verificar se é maior ou igual a zero e menor ou igual a dez
-                JOptionPane.showMessageDialog(this, resultado.getMensagem(), "Erro", JOptionPane.ERROR_MESSAGE);
-                txtntrabalho.setBorder(bordaErro);
-                txtntrabalho.requestFocus();
-                return;
-            }
-        } catch (NumberFormatException ex) { //Capturar erro e impedir que trave
-            JOptionPane.showMessageDialog(this, "Nota do Trabalho deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException ex) { //Captura erro de conversão para número decimal.
+            JOptionPane.showMessageDialog(this, "Nota do Trabalho deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);//Exibe a mensagem de erro em uma caixa de diálogo.
             txtntrabalho.setBorder(bordaErro);
             txtntrabalho.requestFocus();
             return;
         }
-        new Finale(aluno).setVisible(true);
-        this.dispose();
+        new Finale(aluno).setVisible(true); //Abre a janela Finale com os dados do aluno.
+        this.dispose(); //Fechar a tela atual.
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnsairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsairActionPerformed
-        System.exit(0);
+        System.exit(0); //Encerra a aplicação.
     }//GEN-LAST:event_btnsairActionPerformed
 
     /**
